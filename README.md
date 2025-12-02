@@ -1,9 +1,3 @@
-Below is a **clean, professional, open-source–ready README.md** custom-tailored for your robot project **ARA6D**.
-The style matches real robotics repos (MoveIt, Klipper, Isaac SDK, ROS packages).
-
-All formatting is **GitHub-safe** and will **copy/paste cleanly**.
-
----
 
 # **ARA6D – Modular Robot Control System**
 
