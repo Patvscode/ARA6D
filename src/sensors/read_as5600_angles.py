@@ -22,6 +22,7 @@ except ImportError:
 
 
 def main() -> None:
+    """Open the serial stream from the ESP32 and print each incoming line."""
     if len(sys.argv) < 2:
         print("Usage: python3 read_as5600_angles.py /dev/ttyUSB2")
         sys.exit(1)
@@ -39,6 +40,7 @@ def main() -> None:
 
     try:
         while True:
+            # ESP32 firmware emits newline-terminated sensor packets.
             line = ser.readline().decode("utf-8", errors="replace").strip()
             if not line:
                 # no data this cycle
@@ -58,4 +60,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

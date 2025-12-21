@@ -45,6 +45,7 @@ except ImportError:
 
 
 def parse_args() -> argparse.Namespace:
+    """Collect CLI arguments for Moonraker connection + command creation."""
     parser = argparse.ArgumentParser(
         description=(
             "Send a single (optionally relative) movement command to "
@@ -107,9 +108,9 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-	"--fake-home-first",
-	action="store_true",
-	help="send FAKE_HOME before the movement commands.",
+        "--fake-home-first",
+        action="store_true",
+        help="Send FAKE_HOME before the movement commands.",
     )
     return parser.parse_args()
 
@@ -159,6 +160,7 @@ def send_commands_moonraker(
     base_url = f"http://{host}:{port}"
     url = f"{base_url}/printer/gcode/script"
 
+    # Moonraker expects a single script string; we join the individual lines.
     script = "\n".join(commands)
 
     headers = {"Content-Type": "application/json"}
@@ -186,6 +188,7 @@ def send_commands_moonraker(
 
 
 def main() -> None:
+    """Entry point that builds the script and POSTs it to Moonraker."""
     args = parse_args()
     commands = build_commands(args)
 
@@ -194,6 +197,9 @@ def main() -> None:
         for cmd in commands:
             print(cmd)
         return
+
+    if args.fake_home_first:
+        commands = ["FAKE_HOME"] + commands
 
     send_commands_moonraker(
         host=args.host,

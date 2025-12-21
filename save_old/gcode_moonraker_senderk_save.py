@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Utility script to send simple G-code moves to a Klipper/Moonraker instance.
+Legacy utility script to send simple G-code moves to a Klipper/Moonraker instance.
 
 Instead of talking directly to the USB serial port, this script sends G-code
 to Moonraker's HTTP API:
@@ -18,6 +18,9 @@ This will build:
     G90
 
 and send it to http://localhost:7125/printer/gcode/script by default.
+
+Note: This file is kept as an archived snapshot; see
+gcode/gcode_moonraker_sender.py for the maintained version.
 """
 
 from __future__ import annotations

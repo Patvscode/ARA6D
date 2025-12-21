@@ -26,6 +26,8 @@ except ImportError as exc:
         )
     )
 
+# Map a human-friendly option name to actual characters so we can
+# interoperate with controllers that expect LF/CR/CRLF terminators.
 LINE_ENDINGS = {
     "lf": "\n",
     "cr": "\r",
@@ -33,6 +35,7 @@ LINE_ENDINGS = {
 }
 
 def parse_args() -> argparse.Namespace:
+    """Collect CLI parameters that define the serial connection + G-code to send."""
     parser = argparse.ArgumentParser(
         description="Send a single (optionally relative) movement command over serial."
     )
@@ -99,6 +102,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 def build_commands(args: argparse.Namespace) -> List[str]:
+    """Translate CLI flags into a list of concrete G-code commands."""
     if args.command:
         return [args.command.strip()]
 
@@ -131,6 +135,7 @@ def send_commands(
     line_ending: str,
     verbose: bool,
 ) -> None:
+    """Open the serial port and stream each command with optional logging."""
     with serial.Serial(port, baudrate=baud, timeout=timeout) as ser:
         ser.reset_input_buffer()
         ser.reset_output_buffer()
@@ -148,6 +153,7 @@ def send_commands(
                     print(f"<< {response}")
 
 def main() -> None:
+    """Entry point that orchestrates parsing, command building, and I/O."""
     args = parse_args()
     commands = build_commands(args)
 
@@ -172,4 +178,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
