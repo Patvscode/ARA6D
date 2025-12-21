@@ -71,7 +71,7 @@ def move_joints_interactive() -> None:
     print("Enter the amount you want to move each joint (relative units).")
     print("Leave a field empty if you don't want to move that joint.\n")
 
-    # Ask for J1..J6
+    # Ask for J1..J6 offsets. Each one maps to a joint/axis in gcode_joint_sender.py.
     j1 = prompt_float("J1")
     j2 = prompt_float("J2")
     j3 = prompt_float("J3")
@@ -84,11 +84,11 @@ def move_joints_interactive() -> None:
         print("No joints specified, nothing to do.\n")
         return
 
-    # Options
+    # Options that toggle relative moves and optional FAKE_HOME injection.
     relative = prompt_yes_no("Use relative move (G91/G90)?", default=True)
     fake_home_first = prompt_yes_no("Send FAKE_HOME before move?", default=True)
 
-    # Feed rate
+    # Feed rate controls move speed in mm/min for the generated G1 command.
     while True:
         raw_feed = input("Feed rate (mm/min, default 400): ").strip()
         if raw_feed == "":
@@ -100,7 +100,8 @@ def move_joints_interactive() -> None:
         except ValueError:
             print("  ! Please enter a number or press Enter for default.")
 
-    # Build the command to call gcode_joint_sender.py
+    # Build the command to call gcode_joint_sender.py as a subprocess.
+    # This keeps the CLI in one place and reuses its Moonraker logic.
     cmd = [
         "python3",
         "gcode_joint_sender.py",

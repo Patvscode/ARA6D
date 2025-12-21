@@ -2,7 +2,7 @@
 """
 robot_main.py
 
-Interactive “base” console for your robot.
+Legacy interactive “base” console for your robot.
 
 - Lets you move joints J1..J6 interactively.
 - Under the hood, calls gcode_joint_sender.py (which talks to Moonraker/Klipper).
@@ -13,6 +13,9 @@ Usage (from ~/Documents/G_scripts):
     python3 robot_main.py
 
 Then follow the on-screen menu.
+
+Note: This copy is preserved for reference; the actively maintained version
+lives in src/robot_main.py.
 """
 
 from __future__ import annotations

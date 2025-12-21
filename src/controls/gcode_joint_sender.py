@@ -47,6 +47,7 @@ except ImportError:
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse CLI args for Moonraker connection and joint/axis movement intent."""
     parser = argparse.ArgumentParser(
         description=(
             "Send a G-code script to Moonraker (/printer/gcode/script), "
@@ -137,7 +138,7 @@ def build_commands(args: argparse.Namespace) -> List[str]:
         # Split into lines so we can combine with G91/G90 if needed.
         return [line for line in script.splitlines() if line.strip()]
 
-    # 1. Start with raw axis inputs
+    # 1. Start with raw axis inputs (explicit axis flags take initial precedence).
     axis_values = {axis: getattr(args, axis) for axis in ("x", "y", "z", "a", "b", "c")}
 
     # 2. Map joints J1..J6 onto axes X/Y/Z/A/B/C
@@ -225,6 +226,7 @@ def send_commands_moonraker(
 
 
 def main() -> None:
+    """Entry point that assembles a G-code script and posts it to Moonraker."""
     args = parse_args()
     commands = build_commands(args)
 
